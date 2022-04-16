@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "ubuntu" do |ubuntu|
+    ubuntu.vm.box = "ubuntu/xenial64"
+	ubuntu.vm.boot_timeout=500
+    ubuntu.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 1
+    end
+	ubuntu.vm.provision "file", source: "sysbench-script.sh", destination: "/tmp/sysbench-script.sh"
+	ubuntu.vm.provision "shell", inline: <<-SHELL
+	  apt update
+	  apt install -y curl
+	  curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | bash
+	  apt install -y sysbench
+	  mkdir /var/scripts
+	  cp /tmp/sysbench-script.sh /var/scripts/sysbench-script.sh
+	SHELL
+  end
+end
