@@ -1,7 +1,6 @@
 import json
 import urllib
-import logging
-logging.basicConfig(level=logging.DEBUG)
+
 def handle(req):
     urlstring = urllib.unquote(req).decode('utf8').strip('payload=')
     request = json.loads(urlstring)
