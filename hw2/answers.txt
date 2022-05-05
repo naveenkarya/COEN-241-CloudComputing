@@ -1,0 +1,56 @@
+1.a. Invoking the slack-request function via curl:
+curl localhost:8080/function/slack-request -d "{}"
+-d is used to provide POST data in the curl request.
+
+1.b. Invoking the slack-request function via faas-cli (input from stdin):
+echo "{}" | faas-cli invoke slack-request
+
+
+2. Output of slack-request function invocation- This is just a json that we hardcoded in the handle method:
+{"text": "Serverless Message", "attachments": [{"fields": [{"short": true, "value": "100", "title": "Amazing Level"}], "author_icon": "", "image_url": "https://avatars.githubusercontent.com/u/28781654?s=400&u=e62923e4d3784d79a35208b4f4cb58567c6ac72f&v=4", "author_name": "Naveen Kumar", "title": "The Awesome world of Cloud Computing! COEN 241"}, {"text": "COEN 241 is the most awesome class ever!.", "title": "About COEN 241"}, {"title": "Would you recommend COEN 241 to your friends?", "color": "#3AA3E3", "actions": [{"text": "Of Course!", "type": "button", "name": "recommend", "value": "recommend"}, {"text": "Most Definitely!", "type": "button", "name": "definitely", "value": "definitely"}], "callback_id": "response123", "fallback": "Would you recommend COEN 241 to your friends?", "attachment_type": "default"}]}
+
+3.a. Invoking the slack-interactive function via curl:
+curl localhost:8080/function/slack-interactive -d "{}"
+
+3.b. Invoking the slack-interactive function via faas-cli (input from stdin):
+echo "{}" | faas-cli invoke slack-interactive
+
+
+4. Output of slack-interactive function invocation- This is just a json that we hardcoded in the handle method:
+{"attachments": [{"footer": "Slack Apps built on OpenFaas", "author_link": "https://github.com/naveenkarya", "color": "#36a64f", "text": "Head over to COEN 241", "title": "COEN 241", "ts": 123456789, "author_name": "Naveen Kumar", "title_link": "https://www.scu.edu/engineering/academic-programs/department-of-computer-engineering/graduate/course-descriptions/", "image_url": "https://www.scu.edu/media/offices/umc/scu-brand-guidelines/visual-identity-amp-photography/visual-identity-toolkit/logos-amp-seals/Mission-Dont3.png", "response_type": "ephemeral", "replace_original": true, "footer_icon": "https://a.slack-edge.com/45901/marketing/img/_rebrand/meta/slack_hash_256.png", "pretext": "Ahh yeah! Great choice, COEN 241 is absolutely amazing!", "fallback": "Required plain-text summary of the attachment.", "thumb_url": "https://www.scu.edu/engineering/academic-programs/department-of-computer-engineering/graduate/course-descriptions/", "author_icon": "https://avatars.githubusercontent.com/u/28781654?s=400&u=e62923e4d3784d79a35208b4f4cb58567c6ac72f&v=4"}]}
+
+
+5. The handle method takes a string argument (referred by req in below example):
+def handle(req):
+And we can pass argument's value while invoking.
+
+Using CLI via stdin:
+echo "{}" | faas-cli invoke slack-interactive
+
+Or using curl via the -d argument:
+curl localhost:8080/function/figlet -d "hello"
+
+
+6. slack-interactive function can react to different inputs. I implemented a simple use-case. The function takes the author name from the request body.
+If there isn't any author in the request json, then it defaults to "Naveen Kumar". Below is the line of code.
+"author_name": request.get("author", "Naveen Kumar"),
+This code is also committed in my github repo.
+
+Screenshot author-name-from-input.png displays this scenario. Below is the walkthrough:
+Below request contains author:
+naveenk@naveenk-ThinkPad-T460s:~/HW2/COEN-241/hw2/functions$ cat test-request.json
+{
+	"author":"Gandalf"
+}
+
+You can see it reflected in response below as "author_name": "Gandalf":
+
+naveenk@naveenk-ThinkPad-T460s:~/HW2/COEN-241/hw2/functions$ cat test-request.json | faas-cli invoke slack-interactive
+{"attachments": [{"footer": "Slack Apps built on OpenFaas", "author_link": "https://github.com/naveenkarya", "color": "#36a64f", "text": "Head over to COEN 241", "title": "COEN 241", "ts": 123456789, "author_name": "Gandalf", "title_link": "https://www.scu.edu/engineering/academic-programs/department-of-computer-engineering/graduate/course-descriptions/", "image_url": "https://www.scu.edu/media/offices/umc/scu-brand-guidelines/visual-identity-amp-photography/visual-identity-toolkit/logos-amp-seals/Mission-Dont3.png", "response_type": "ephemeral", "replace_original": true, "footer_icon": "https://a.slack-edge.com/45901/marketing/img/_rebrand/meta/slack_hash_256.png", "pretext": "Ahh yeah! Great choice, COEN 241 is absolutely amazing!", "fallback": "Required plain-text summary of the attachment.", "thumb_url": "https://www.scu.edu/engineering/academic-programs/department-of-computer-engineering/graduate/course-descriptions/", "author_icon": "https://avatars.githubusercontent.com/u/28781654?s=400&u=e62923e4d3784d79a35208b4f4cb58567c6ac72f&v=4"}]}
+
+But with empty request it defaults to author_name": "Naveen Kumar":
+
+naveenk@naveenk-ThinkPad-T460s:~/HW2/COEN-241/hw2/functions$ echo "{}" | faas-cli invoke slack-interactive
+{"attachments": [{"footer": "Slack Apps built on OpenFaas", "author_link": "https://github.com/naveenkarya", "color": "#36a64f", "text": "Head over to COEN 241", "title": "COEN 241", "ts": 123456789, "author_name": "Naveen Kumar", "title_link": "https://www.scu.edu/engineering/academic-programs/department-of-computer-engineering/graduate/course-descriptions/", "image_url": "https://www.scu.edu/media/offices/umc/scu-brand-guidelines/visual-identity-amp-photography/visual-identity-toolkit/logos-amp-seals/Mission-Dont3.png", "response_type": "ephemeral", "replace_original": true, "footer_icon": "https://a.slack-edge.com/45901/marketing/img/_rebrand/meta/slack_hash_256.png", "pretext": "Ahh yeah! Great choice, COEN 241 is absolutely amazing!", "fallback": "Required plain-text summary of the attachment.", "thumb_url": "https://www.scu.edu/engineering/academic-programs/department-of-computer-engineering/graduate/course-descriptions/", "author_icon": "https://avatars.githubusercontent.com/u/28781654?s=400&u=e62923e4d3784d79a35208b4f4cb58567c6ac72f&v=4"}]}
+
+
