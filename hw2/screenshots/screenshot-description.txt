@@ -1,4 +1,4 @@
-Description of Screenshots
+Description of Screenshots. Same details are also mentioned in README.md of screenshots directory.
 
 invoke-figlet.png: Execution of figlet function.
 journalctl.png: faasd logs using journalctl.
