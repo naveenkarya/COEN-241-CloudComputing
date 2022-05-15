@@ -48,13 +48,11 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
 ```
 ## Task 2
 
-### Q1 Function call graph
-start_switch function is called initially when the topology is created with this remote controller.
-start_switch connects to a switch, and is invoked 7 times, because we have 7 switches in our topology.
-Similarly, the Tutorial object is created for each switch through the start_switch function.
+### Q1
+start_switch function is called initially when the topology is created with this remote controller. start_switch function creates Tutorial object for each switch.
 
 Packet is handled in function "_handle_PacketIn" which will invoke function "act_like_hub" ("act_like_switch" is commented by default).
-act_like_hub will invoke function resend_packet (with output port as OFPP_ALL, which sends it to all ports)
+act_like_hub will invoke function resend_packet (with output port as OFPP_ALL, which sends it to all ports except input)
 resend_packet will send the message using connection.send
 _handle_PacketIn -> act_like_hub -> resend_packet -> connection.send
 
@@ -77,6 +75,7 @@ Average: 7.964 ms
 Min: 2.650 ms
 Max: 10.768 ms
 
+#### Difference in rtt
 Ping from h1 to h8 takes more time than ping from h1 to h2.
 This is because h1 to h2 has less number of hops (via s3) while h1 to h8 has more number of hops (s3 -> s2 -> s1 -> s5 -> s7)
 
@@ -96,7 +95,8 @@ http://mininet.org/api/classmininet_1_1net_1_1Mininet.html#a8e07931f87a08d793bda
 *** Iperf: testing TCP bandwidth between h1 and h8 
 *** Results: ['2.73 Mbits/sec', '3.10 Mbits/sec']
 ```
-h1 and h2 has less number of hops, resulting in better bandwidth when compared to h1 and h8.
+#### Difference in throughput
+h1 and h2 has greater throughput when compared to h1 and h8. This is because h1 and h2 has less number of hops between them.
 
 ### Q4
 Since all the switches are acting like a hub and forwarding packets to all ports except the input, all the switches get the same amount of traffic.
@@ -105,7 +105,7 @@ I printed the switch/connection inside the _handle_PacketIn function using:
 print(event.connection)
 ```
 
-This is a sample output, when ping was sent from h1 to h2
+This is a sample output, when ping was sent from h1 to h2. It shows equal traffic on all switches.
 ```
 [00-00-00-00-00-03 5]
 [00-00-00-00-00-02 6]
@@ -131,7 +131,7 @@ Initially this map is empty.
 ```
 self.mac_to_port = {}
 ```
-Whenever any packet arrives at a specific port, then the code checks if the source MAC is already saved in mac_to_port map.
+Whenever any packet arrives at a specific port, the code checks if the source MAC is already saved in mac_to_port map.
 If it is not yet saved, then it will save it in the map (Source MAC -> Input Port).
 ```
 if packet.src not in self.mac_to_port:
@@ -142,7 +142,7 @@ Now whenever it gets a packet that has a destination MAC address that is already
 if packet.dst in self.mac_to_port:
   self.resend_packet(packet_in, self.mac_to_port[packet.dst])
 ```
-If the destination MAC address is not know then it defaults to the previous behavior of sending to all ports (except input)
+If the destination MAC address is not known then it defaults to the previous behavior of sending to all ports (except input)
 ```
 else:
   self.resend_packet(packet_in, of.OFPP_ALL)

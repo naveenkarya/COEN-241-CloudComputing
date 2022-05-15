@@ -43,10 +43,5 @@ class BinaryTreeTopo( Topo ):
         self.addLink(s6,h6)
         self.addLink(s7,h7)
         self.addLink(s7,h8)
-	# Add hosts
-
-	# Add switches
-
-	# Add links
 
 topos = { 'binary_tree': ( lambda: BinaryTreeTopo() ) }
