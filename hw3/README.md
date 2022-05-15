@@ -1,12 +1,12 @@
 ## Task 1
 ### Output of nodes
-
+```
 mininet> nodes
 available nodes are: 
 c0 h1 h2 h3 h4 h5 h6 h7 h8 s1 s2 s3 s4 s5 s6 s7
-
+```
 ### Output of net
-
+```
 mininet> net
 h1 h1-eth0:s3-eth2
 h2 h2-eth0:s3-eth3
@@ -24,9 +24,9 @@ s5 lo:  s5-eth1:s1-eth2 s5-eth2:s6-eth1 s5-eth3:s7-eth1
 s6 lo:  s6-eth1:s5-eth2 s6-eth2:h5-eth0 s6-eth3:h6-eth0
 s7 lo:  s7-eth1:s5-eth3 s7-eth2:h7-eth0 s7-eth3:h8-eth0
 c0
-
+```
 ### Output of h7 ifconfig
-
+```
 mininet> h7 ifconfig
 h7-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 10.0.0.7  netmask 255.0.0.0  broadcast 10.255.255.255
@@ -45,7 +45,7 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         RX errors 0  dropped 0  overruns 0  frame 0
         TX packets 0  bytes 0 (0.0 B)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
+```
 ## Task 2
 
 ### Q1 Function call graph
@@ -60,17 +60,19 @@ _handle_PacketIn -> act_like_hub -> resend_packet -> connection.send
 
 ### Q2
 #### h1 ping h2
+```
 100 packets transmitted, 100 received, 0% packet loss, time 99166ms
 rtt min/avg/max/mdev = 1.152/2.596/3.862/0.308 ms
-
+```
 Average: 2.596 ms
 Min: 1.152 ms
 Max: 3.862 ms
 
 #### h1 ping h8
+```
 00 packets transmitted, 100 received, 0% packet loss, time 99156ms
 rtt min/avg/max/mdev = 2.650/7.964/10.768/1.422 ms
-
+```
 Average: 7.964 ms
 Min: 2.650 ms
 Max: 10.768 ms
@@ -85,13 +87,15 @@ So, we can measure both uplink and downlink speeds.
 http://mininet.org/api/classmininet_1_1net_1_1Mininet.html#a8e07931f87a08d793bdaefbfa5c279e7
 
 #### iperf h1 h2
+```
 *** Iperf: testing TCP bandwidth between h1 and h2 
 *** Results: ['18.6 Mbits/sec', '21.5 Mbits/sec']
-
+```
 #### iperf h1 h8
+```
 *** Iperf: testing TCP bandwidth between h1 and h8 
 *** Results: ['2.73 Mbits/sec', '3.10 Mbits/sec']
-
+```
 h1 and h2 has less number of hops, resulting in better bandwidth when compared to h1 and h8.
 
 ### Q4
@@ -159,17 +163,19 @@ Src:  2e:4c:ff:4d:38:68 : 3 Dst: 1e:ea:cc:ba:c7:b5
 ### Q2
 
 #### h1 ping h2
+```
 100 packets transmitted, 100 received, 0% packet loss, time 99256ms
 rtt min/avg/max/mdev = 0.808/1.689/2.463/0.437 ms
-
+```
 Average: 1.689 ms
 Min: 0.808 ms
 Max: 2.463 ms
 
 #### h1 ping h8
+```
 100 packets transmitted, 100 received, 0% packet loss, time 99147ms
 rtt min/avg/max/mdev = 2.170/5.960/8.604/1.947 ms
-
+```
 Average: 5.960 ms
 Min: 2.170 ms
 Max: 8.604 ms
@@ -179,12 +185,14 @@ But note that average rtt for h1 to h8 is still relatively greater than that of 
 
 ### Q3
 #### iperf h1 h2
+```
 *** Iperf: testing TCP bandwidth between h1 and h2 
 *** Results: ['83.8 Mbits/sec', '86.3 Mbits/sec']
-
+```
 #### iperf h1 h8
+```
 *** Iperf: testing TCP bandwidth between h1 and h8 
 *** Results: ['3.16 Mbits/sec', '3.68 Mbits/sec']
-
+```
 The network bandwidth performance between h1 and h2 increased drastically when compared to Task 2. This is because the switches can now learn and send to the correct port, instead of flooding the network with duplicate packets. This results in better network utilization.
 The bandwidth between h1 and h8 increased only slightly, because it still needs to travel more number of hops.
