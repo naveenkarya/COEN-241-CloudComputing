@@ -75,7 +75,7 @@ rtt min/avg/max/mdev = 2.650/7.964/10.768/1.422 ms
 - Min: 2.650 ms
 - Max: 10.768 ms
 
-#### Difference in rtt
+#### Difference in round-trip-time
 Ping from h1 to h8 takes more time than ping from h1 to h2.
 This is because h1 to h2 has less number of hops (via s3) while h1 to h8 has more number of hops (s3 -> s2 -> s1 -> s5 -> s7)
 
@@ -182,8 +182,9 @@ rtt min/avg/max/mdev = 2.170/5.960/8.604/1.947 ms
 - Min: 2.170 ms
 - Max: 8.604 ms
 
-Average rtt for both scenarios decreased when compared to Task 2, because now the switches can learn which port to use for which destination MAC address.
-But note that average rtt for h1 to h8 is still relatively greater than that of h1 to h2, due to more number of hops.
+#### Comparison with Task 2
+Average rtt for both scenarios decreased slightly when compared to Task 2. This is because now the switches can learn which port to use for which destination MAC address, instead of forwarding to all ports, resulting in better network bandwidth utilization. Better network utilization also improves the round-trip-time. I tested print(event.connection) again using h2 ping h1, but this time it prints only the switch 3. Other switches do not receive traffic which is as expected.
+Note that average rtt for h1 to h8 is still relatively greater than that of h1 to h2, due to more number of hops.
 
 ### Q3
 #### iperf h1 h2
@@ -196,5 +197,6 @@ But note that average rtt for h1 to h8 is still relatively greater than that of 
 *** Iperf: testing TCP bandwidth between h1 and h8 
 *** Results: ['3.16 Mbits/sec', '3.68 Mbits/sec']
 ```
-The network bandwidth performance between h1 and h2 increased drastically when compared to Task 2. This is because the switches can now learn and send to the correct port, instead of flooding the network with duplicate packets. This results in better network utilization.
-The bandwidth between h1 and h8 increased only slightly, because it still needs to travel more number of hops.
+#### Comparison with Task 2
+The network bandwidth performance between h1 and h2 increased drastically when compared to Task 2. This is because the switches can now learn to forward to the correct port, instead of flooding the network with duplicate packets. This results in better network utilization.
+The bandwidth between h1 and h8 increased only slightly, because it still needs to travel maximum number of hops.
