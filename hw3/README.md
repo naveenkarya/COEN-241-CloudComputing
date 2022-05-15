@@ -51,9 +51,10 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
 ### Q1
 start_switch function is called initially when the topology is created with this remote controller. start_switch function creates Tutorial object for each switch.
 
-Packet is handled in function "_handle_PacketIn" which will invoke function "act_like_hub" ("act_like_switch" is commented by default).
-act_like_hub will invoke function resend_packet (with output port as OFPP_ALL, which sends it to all ports except input)
-resend_packet will send the message using connection.send
+Packet is handled in function "_handle_PacketIn" which will invoke function "act_like_hub" ("act_like_switch" is commented by default). 
+act_like_hub will invoke function resend_packet (with output port as OFPP_ALL, which sends it to all ports except input). 
+resend_packet will send the message using connection.send.
+
 _handle_PacketIn -> act_like_hub -> resend_packet -> connection.send
 
 ### Q2
