@@ -64,18 +64,18 @@ _handle_PacketIn -> act_like_hub -> resend_packet -> connection.send
 100 packets transmitted, 100 received, 0% packet loss, time 99166ms
 rtt min/avg/max/mdev = 1.152/2.596/3.862/0.308 ms
 ```
-Average: 2.596 ms
-Min: 1.152 ms
-Max: 3.862 ms
+- Average: 2.596 ms
+- Min: 1.152 ms
+- Max: 3.862 ms
 
 #### h1 ping h8
 ```
 00 packets transmitted, 100 received, 0% packet loss, time 99156ms
 rtt min/avg/max/mdev = 2.650/7.964/10.768/1.422 ms
 ```
-Average: 7.964 ms
-Min: 2.650 ms
-Max: 10.768 ms
+- Average: 7.964 ms
+- Min: 2.650 ms
+- Max: 10.768 ms
 
 Ping from h1 to h8 takes more time than ping from h1 to h2.
 This is because h1 to h2 has less number of hops (via s3) while h1 to h8 has more number of hops (s3 -> s2 -> s1 -> s5 -> s7)
@@ -84,7 +84,8 @@ This is because h1 to h2 has less number of hops (via s3) while h1 to h8 has mor
 iperf is used to measure the network bandwidth between 2 hosts.
 Mininet documentation says that it returns: "two-element array of [ server, client ] speeds".
 So, we can measure both uplink and downlink speeds.
-http://mininet.org/api/classmininet_1_1net_1_1Mininet.html#a8e07931f87a08d793bdaefbfa5c279e7
+
+Ref: http://mininet.org/api/classmininet_1_1net_1_1Mininet.html#a8e07931f87a08d793bdaefbfa5c279e7
 
 #### iperf h1 h2
 ```
@@ -150,7 +151,8 @@ else:
 
 For example, in the logs below, we can see that when the packet is received from 1e:ea:cc:ba:c7:b5 via port 2, it saves it in the dictionary.
 1e:ea:cc:ba:c7:b5 -> 2
-But when 1e:ea:cc:ba:c7:b5 is the destination of some packet, then it knows which port to send it to, i.e., 2
+
+And when later 1e:ea:cc:ba:c7:b5 is the destination of some packet, then it knows which port to send it to, i.e., 2
 
 ```
 Src:  1e:ea:cc:ba:c7:b5 : 2 Dst: ff:ff:ff:ff:ff:ff
@@ -167,18 +169,18 @@ Src:  2e:4c:ff:4d:38:68 : 3 Dst: 1e:ea:cc:ba:c7:b5
 100 packets transmitted, 100 received, 0% packet loss, time 99256ms
 rtt min/avg/max/mdev = 0.808/1.689/2.463/0.437 ms
 ```
-Average: 1.689 ms
-Min: 0.808 ms
-Max: 2.463 ms
+- Average: 1.689 ms
+- Min: 0.808 ms
+- Max: 2.463 ms
 
 #### h1 ping h8
 ```
 100 packets transmitted, 100 received, 0% packet loss, time 99147ms
 rtt min/avg/max/mdev = 2.170/5.960/8.604/1.947 ms
 ```
-Average: 5.960 ms
-Min: 2.170 ms
-Max: 8.604 ms
+- Average: 5.960 ms
+- Min: 2.170 ms
+- Max: 8.604 ms
 
 Average rtt for both scenarios decreased when compared to Task 2, because now the switches can learn which port to use for which destination MAC address.
 But note that average rtt for h1 to h8 is still relatively greater than that of h1 to h2, due to more number of hops.
